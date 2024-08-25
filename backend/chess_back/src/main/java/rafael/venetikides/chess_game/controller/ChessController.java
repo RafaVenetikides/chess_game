@@ -10,7 +10,7 @@ import rafael.venetikides.chess_game.model.Piece;
 
 @RestController
 @RequestMapping("/api/chess")
-@CrossOrigin(origins = "http://localhost:PORT_OF_FLUTTER_WEB_APP")
+@CrossOrigin(origins = "http://localhost:8081")
 
 public class ChessController {
     

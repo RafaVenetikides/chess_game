@@ -2,6 +2,7 @@ package rafael.venetikides.chess_game;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 import rafael.venetikides.chess_game.model.Board;
 
 @SpringBootApplication
@@ -15,6 +16,8 @@ public class ChessGameApplication {
 		board.initializeBoard();
 
 		System.out.println(board.toString());
+
+		
 	}
 
 }

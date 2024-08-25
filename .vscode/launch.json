@@ -1,0 +1,58 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "ChessGameApplication",
+            "request": "launch",
+            "mainClass": "rafael.venetikides.chess_game.ChessGameApplication",
+            "projectName": "chess_game"
+        },
+        {
+            "name": "chess_front",
+            "cwd": "frontend\\chess_front",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--web-port",
+                "8081"
+            ]
+        },
+        {
+            "name": "chess_front (profile mode)",
+            "cwd": "frontend\\chess_front",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile",
+            "args": [
+                "--web-port",
+                "8081"
+            ]
+        },
+        {
+            "name": "chess_front (release mode)",
+            "cwd": "frontend\\chess_front",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--web-port",
+                "8081"
+            ]
+        },
+        {
+            "name": "Dart",
+            "cwd": "frontend\\chess_front",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "args": [
+                "--web-port",
+                "8081"
+            ]
+        }
+    ]
+}
