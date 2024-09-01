@@ -55,8 +55,8 @@ public class Board {
         return board;
     }
 
-    public Piece getPieceAt(int row, int col){
-        return board[row][col];
+    public Piece getPieceAt(Position position){
+        return board[position.getRow()][position.getColumn()];
     }
     
     public boolean movePiece(Position from, Position to){

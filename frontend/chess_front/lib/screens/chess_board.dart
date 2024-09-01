@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../models/chess_board_model.dart';
 import '../widgets/draggable_chess_piece.dart';
 
 class ChessBoard extends StatefulWidget {
@@ -25,6 +24,8 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   Future<void> fetchBoard() async {
+    // Gets board from java backend
+
     final response = await http.get(Uri.parse("http://localhost:8080/api/chess/board"));
 
     if(response.statusCode == 200){
@@ -40,14 +41,13 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   void handlePieceDropped(int startRow, int startCol, int endRow, int endCol) async{
-    // TODO: Send piece to backend
+    // Handles a chess piece being dropped on a square
+
     print('Moving piece from ($startRow, $startCol) to ($endRow, $endCol)');
 
     final moveData = jsonEncode({
-      'fromRow': startRow,
-      'fromCol': startCol,
-      'toRow': endRow,
-      'toCol': endCol,
+      'from': {'row': startRow, 'col': startCol},
+      'to': {'row': endRow, 'col': endCol},
     });
 
     final response = await http.post(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../models/chess_board_model.dart';
 
 class DraggableChessPiece extends StatelessWidget {
   // This widget will be used to create draggable chess pieces.
