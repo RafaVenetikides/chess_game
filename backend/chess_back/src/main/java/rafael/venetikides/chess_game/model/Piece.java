@@ -22,6 +22,10 @@ public class Piece {
     }
 
     public String toString(){
-        return type.toString();
+        if (color == PieceColor.WHITE){
+            return type.toString().toLowerCase();
+        } else {
+            return type.toString().toUpperCase();
+        }
     }
 }
