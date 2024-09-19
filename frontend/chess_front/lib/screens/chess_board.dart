@@ -50,6 +50,8 @@ class _ChessBoardState extends State<ChessBoard> {
       'to': {'row': endRow, 'col': endCol},
     });
 
+    print('JSON being sent to backend: $moveData');
+
     final response = await http.post(
       Uri.parse("http://localhost:8080/api/chess/move"),
       headers: {"Content-Type": "application/json"},

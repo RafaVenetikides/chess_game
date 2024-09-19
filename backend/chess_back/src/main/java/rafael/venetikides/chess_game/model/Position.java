@@ -2,11 +2,11 @@ package rafael.venetikides.chess_game.model;
 
 public class Position {
     private int row;
-    private int column;
+    private int col;
 
-    public Position(int row, int column){
+    public Position(int row, int col){
         this.row = row;
-        this.column = column;
+        this.col = col;
     }
 
     public int getRow() {
@@ -18,10 +18,10 @@ public class Position {
     }
 
     public int getColumn() {
-        return column;
+        return col;
     }
 
-    public void setColumn(int column) {
-        this.column = column;
+    public void setColumn(int col) {
+        this.col = col;
     }
 }

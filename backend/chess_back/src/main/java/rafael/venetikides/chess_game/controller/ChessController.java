@@ -42,6 +42,8 @@ public class ChessController {
         Position from = moveRequest.getFrom();
         Position to = moveRequest.getTo();
 
+        System.out.println("Move received: from (" + from.getRow() + ", " + from.getColumn() + ") to (" + to.getRow() + ", " + to.getColumn() + ")");
+
         boolean validMove = validateMove(from, to);
         
         if (validMove) {

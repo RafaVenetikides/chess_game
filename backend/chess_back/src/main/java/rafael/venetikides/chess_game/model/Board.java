@@ -43,7 +43,7 @@ public class Board {
                 if(board[i][j] == null){
                     sb.append(" . ");
                 }else{
-                    sb.append(" " + board[i][j] + " ");
+                    sb.append(" ").append(board[i][j]).append(" ");
                 }
             }
             sb.append("\n");
