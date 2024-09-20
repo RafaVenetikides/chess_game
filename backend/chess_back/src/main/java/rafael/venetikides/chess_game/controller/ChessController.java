@@ -20,9 +20,11 @@ import rafael.venetikides.chess_game.model.Position;
 public class ChessController {
     
     private final Board board;
+    private boolean isWhiteTurn;
 
     public ChessController(){
         this.board = new Board();
+        this.isWhiteTurn = false;
     }
 
     @GetMapping("/board")
@@ -42,16 +44,33 @@ public class ChessController {
         Position from = moveRequest.getFrom();
         Position to = moveRequest.getTo();
 
-        System.out.println("Move received: from (" + from.getRow() + ", " + from.getColumn() + ") to (" + to.getRow() + ", " + to.getColumn() + ")");
+        Piece piece = board.getPieceAt(from);
+        if (piece == null) {
+            return ResponseEntity.badRequest().body("No piece at position");
+        }
+
+        boolean isWhitePiece = Character.isUpperCase(piece.toString().charAt(0));
+        if ((isWhiteTurn  && !isWhitePiece) || (!isWhiteTurn && isWhitePiece)) {
+            return ResponseEntity.badRequest().body("Not your turn");
+        }
 
         boolean validMove = validateMove(from, to);
         
         if (validMove) {
             updateBoard(from, to);
+            isWhiteTurn = !isWhiteTurn;
             return ResponseEntity.ok("Move successful");
         } else {
             return ResponseEntity.badRequest().body("Invalid move");
         }
+    }
+
+    @PostMapping("/reset")
+    public ResponseEntity<String> resetBoard() {
+        board.initializeBoard();
+        isWhiteTurn = false;
+        System.out.println(board);
+        return ResponseEntity.ok("Board reset");
     }
 
     private boolean validateMove(Position from, Position to) {

@@ -40,6 +40,26 @@ class _ChessBoardState extends State<ChessBoard> {
     }
   }
 
+  void resetBoard() async {
+    try {
+      final response = await http.post(
+        Uri.parse("http://localhost:8080/api/chess/reset"),  // Endpoint de reset
+        headers: {"Content-Type": "application/json"},
+      );
+
+      if (response.statusCode == 200) {
+        print('Board reset successful');
+        fetchBoard();  // Atualiza o tabuleiro após o reset
+      } else {
+        print('Failed to reset the board: ${response.body}');
+        showError(context, 'Failed to reset the board');
+      }
+    } catch (e) {
+      print('Error resetting the board: $e');
+      showError(context, 'Error resetting the board');
+    }
+  }
+
   void handlePieceDropped(int startRow, int startCol, int endRow, int endCol) async{
     // Handles a chess piece being dropped on a square
 
@@ -52,24 +72,39 @@ class _ChessBoardState extends State<ChessBoard> {
 
     print('JSON being sent to backend: $moveData');
 
-    final response = await http.post(
-      Uri.parse("http://localhost:8080/api/chess/move"),
-      headers: {"Content-Type": "application/json"},
-      body: moveData,
-    );
+    try {
+      final response = await http.post(
+        Uri.parse("http://localhost:8080/api/chess/move"),
+        headers: {"Content-Type": "application/json"},
+        body: moveData,
+      );
 
-    if (response.statusCode == 200){
-      setState(() {
-        chessBoard![endRow][endCol] = chessBoard![startRow][startCol];
-        chessBoard![startRow][startCol] = '';
-      });
-      print('Move successful sent to backend');
-    } else{
-      print('Failed to send move');
-      throw Exception("Failed to send move");
+      if (response.statusCode == 200) {
+        setState(() {
+          chessBoard![endRow][endCol] = chessBoard![startRow][startCol];
+          chessBoard![startRow][startCol] = '';
+        });
+        print('Move successful sent to backend');
+      } else {
+        if (mounted) {
+          print('Failed to send move: ${response.body}');
+          showError(context, 'It is not your turn!');
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        print('Failed to send move due to an error: $e');
+        showError(context, 'Failed to send move due to an error!');
+      }
     }
 
     print('Piece moved from ($startRow, $startCol) to ($endRow, $endCol)');
+  }
+
+  void showError(BuildContext context, String errorMessage) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(errorMessage)),
+    );
   }
 
 @override
@@ -80,6 +115,12 @@ class _ChessBoardState extends State<ChessBoard> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Chess Game"),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.refresh),
+            onPressed: resetBoard,
+          ),
+        ],
       ),
       body: Center(
         child: chessBoard != null
@@ -100,7 +141,7 @@ class _ChessBoardState extends State<ChessBoard> {
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 8,),
         itemBuilder: (context, index) {
-          int row = index ~/ 8;
+          int row = 7 - index ~/ 8;
           int col = index % 8;
           String piece = chessBoard![row][col];
           return buildChessSquare(row, col, piece);
@@ -121,21 +162,21 @@ class _ChessBoardState extends State<ChessBoard> {
         return Container(
           color: isWhite ? const Color(0xFFEBECD0) : const Color(0xFF779556),
           child: Center(
-                  child: piece.isNotEmpty
-                  ? DraggableChessPiece(
-                    piece: piece, 
-                    row: row, 
-                    col: col, 
-                    onDragStarted: (startRow, startCol){
-                      setState(() {
-                        draggingPiece = piece;
-                        draggingPieceRow = startRow;
-                        draggingPieceCol = startCol;
-                      });
-                    },
-                    buildPiece: buildPiece,
-                  )
-                : Container(),
+            child: piece.isNotEmpty
+            ? DraggableChessPiece(
+              piece: piece, 
+              row: row, 
+              col: col, 
+              onDragStarted: (startRow, startCol){
+                setState(() {
+                  draggingPiece = piece;
+                  draggingPieceRow = startRow;
+                  draggingPieceCol = startCol;
+                });
+              },
+              buildPiece: buildPiece,
+            )
+          : Container(),
           ),
         );
       },
@@ -143,29 +184,33 @@ class _ChessBoardState extends State<ChessBoard> {
   }
 
   Widget buildPiece(String piece) {
-    // Build the UI for a single chess piece, with outline and main piece layers
-
     final pieceSymbol = getPieceSymbol(piece);
+
+    // Definindo o estilo da peça
+    final TextStyle pieceStyle = TextStyle(
+      fontFamily: 'ChessSymbols',
+      fontSize: 32,
+      color: piece == piece.toUpperCase() ? Colors.black : Colors.white,
+    );
+
+    final TextStyle outlineStyle = pieceStyle.copyWith(
+      foreground: Paint()
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 3
+        ..color = piece == piece.toUpperCase() ? Colors.white : Colors.black,
+    );
+
     return Stack(
       children: [
-        // Outline layer
+        // Camada do contorno
         Text(
           pieceSymbol,
-          style: TextStyle(
-            fontSize: 32,
-            foreground: Paint()
-              ..style = PaintingStyle.stroke
-              ..strokeWidth = 3
-              ..color = piece == piece.toUpperCase() ? Colors.white : Colors.black,
-          ),
+          style: outlineStyle,
         ),
-        // Main piece layer
+        // Camada da peça principal
         Text(
           pieceSymbol,
-          style: TextStyle(
-            fontSize: 32,
-            color: piece == piece.toUpperCase() ? Colors.black : Colors.white,
-          ),
+          style: pieceStyle,
         ),
       ],
     );

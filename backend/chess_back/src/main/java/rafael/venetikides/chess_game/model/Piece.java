@@ -23,9 +23,9 @@ public class Piece {
 
     public String toString(){
         if (color == PieceColor.WHITE){
-            return type.toString().toLowerCase();
-        } else {
             return type.toString().toUpperCase();
+        } else {
+            return type.toString().toLowerCase();
         }
     }
 }
