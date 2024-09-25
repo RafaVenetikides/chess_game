@@ -87,8 +87,14 @@ class _ChessBoardState extends State<ChessBoard> {
         print('Move successful sent to backend');
       } else {
         if (mounted) {
-          print('Failed to send move: ${response.body}');
-          showError(context, 'It is not your turn!');
+          final responseBody = response.body;
+          print("Failed to send move: $responseBody");
+
+          if (responseBody.contains("Not your turn")) {
+            showError(context, "It's not your turn!");
+          } else if (responseBody.contains("Source and destination are the same")) {
+              // Do nothing, just continue
+          }
         }
       }
     } catch (e) {

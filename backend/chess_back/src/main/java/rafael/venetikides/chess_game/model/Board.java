@@ -56,14 +56,14 @@ public class Board {
     }
 
     public Piece getPieceAt(Position position){
-        return board[position.getRow()][position.getColumn()];
+        return board[position.getRow()][position.getCol()];
     }
     
     public boolean movePiece(Position from, Position to){
-        Piece piece = board[from.getRow()][from.getColumn()];
+        Piece piece = board[from.getRow()][from.getCol()];
         if(piece != null && isMoveValid(piece, from, to)){
-            board[to.getRow()][to.getColumn()] = piece;
-            board[from.getRow()][from.getColumn()] = null;
+            board[to.getRow()][to.getCol()] = piece;
+            board[from.getRow()][from.getCol()] = null;
             return true;
         }
         return false;

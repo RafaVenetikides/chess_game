@@ -17,11 +17,15 @@ public class Position {
         this.row = row;
     }
 
-    public int getColumn() {
+    public int getCol() {
         return col;
     }
 
-    public void setColumn(int col) {
+    public void setCol(int col) {
         this.col = col;
+    }
+
+    public boolean equals(Position other){
+        return this.row == other.row && this.col == other.col;
     }
 }

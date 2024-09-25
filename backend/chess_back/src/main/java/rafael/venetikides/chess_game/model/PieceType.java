@@ -4,7 +4,7 @@ public enum PieceType {
     KING {
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return Math.abs(from.getRow() - to.getRow()) <= 1 && Math.abs(from.getColumn() - to.getColumn()) <= 1;
+            return Math.abs(from.getRow() - to.getRow()) <= 1 && Math.abs(from.getCol() - to.getCol()) <= 1;
         }
 
         @Override
@@ -15,7 +15,7 @@ public enum PieceType {
     QUEEN{
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return from.getRow() == to.getRow() || from.getColumn() == to.getColumn() || Math.abs(from.getRow() - to.getRow()) == Math.abs(from.getColumn() - to.getColumn());
+            return from.getRow() == to.getRow() || from.getCol() == to.getCol() || Math.abs(from.getRow() - to.getRow()) == Math.abs(from.getCol() - to.getCol());
         }
 
         @Override
@@ -26,7 +26,7 @@ public enum PieceType {
     ROOK{
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return from.getRow() == to.getRow() || from.getColumn() == to.getColumn();
+            return from.getRow() == to.getRow() || from.getCol() == to.getCol();
         }
 
         @Override
@@ -37,7 +37,7 @@ public enum PieceType {
     BISHOP{
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return Math.abs(from.getRow() - to.getRow()) == Math.abs(from.getColumn() - to.getColumn());
+            return Math.abs(from.getRow() - to.getRow()) == Math.abs(from.getCol() - to.getCol());
         }
 
         @Override
@@ -48,7 +48,7 @@ public enum PieceType {
     KNIGHT{
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return (Math.abs(from.getRow() - to.getRow()) == 2 && Math.abs(from.getColumn() - to.getColumn()) == 1) || (Math.abs(from.getRow() - to.getRow()) == 1 && Math.abs(from.getColumn() - to.getColumn()) == 2);
+            return (Math.abs(from.getRow() - to.getRow()) == 2 && Math.abs(from.getCol() - to.getCol()) == 1) || (Math.abs(from.getRow() - to.getRow()) == 1 && Math.abs(from.getCol() - to.getCol()) == 2);
         }
 
         @Override
@@ -59,7 +59,7 @@ public enum PieceType {
     PAWN{
         @Override
         public boolean isMoveValid(Position from, Position to, Board board) {
-            return from.getColumn() == to.getColumn() && Math.abs(from.getRow() - to.getRow()) == 1;
+            return from.getCol() == to.getCol() && Math.abs(from.getRow() - to.getRow()) == 1;
         }
 
         @Override
